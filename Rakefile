@@ -5,12 +5,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "scraper"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{Collects all links on a webpage recursively.}
     gem.email = "guitsaru@gmail.com"
     gem.homepage = "http://github.com/guitsaru/scraper"
     gem.authors = ["Matt Pruitt"]
     gem.rubyforge_project = "scraper"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency('hpricot', '>= 0.6.161')
   end
 
   Jeweler::RubyforgeTasks.new

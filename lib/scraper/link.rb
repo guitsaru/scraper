@@ -18,6 +18,14 @@ module Scrape
       @url == other.url
     end
     
+    def eql?(other)
+      return self == other
+    end
+    
+    def hash
+      @url.hash
+    end
+    
     private
     def get_links(div)
       links = []
@@ -27,9 +35,11 @@ module Scrape
         url = link['href']
         if url =~ /^\/(.*)/
           components = URI::split(@url)
-          url = "#{components[0] || 'http'}://#{components[2]}/url"
+          url = "#{components[0] || 'http'}://#{components[2]}#{url}"
         elsif url =~ /^http:\/\//i
           url = url
+        elsif url =~ /^#/
+          url = @url.gsub(/#.*/, '').gsub(/\/$/, '') + url
         else
           url = (File.dirname(@url) + '/' + (url || ''))
         end

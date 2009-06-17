@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/scraper.rb",
      "lib/scraper/link.rb",
+     "scraper.gemspec",
      "test/fake_pages/first_child_page.html",
      "test/fake_pages/first_page.html",
      "test/fake_pages/main.html",

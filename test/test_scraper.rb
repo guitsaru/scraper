@@ -22,7 +22,7 @@ class TestScraper < Test::Unit::TestCase
     should "Include a list of links on the pages." do
       assert(@results.include?(Link.new('http://example.com/first_page.html')))
       assert(@results.include?(Link.new('http://example.com/first_child_page.html')))
-      assert(@results.include?(Link.new('http://google.com')))
+      assert(@results.include?(Link.new('http://example.com/main.html')))
     end
     
     should "Not include any links outside of the content div" do

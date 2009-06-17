@@ -1,0 +1,7 @@
+= scraper
+
+Description goes here.
+
+== Copyright
+
+Copyright (c) 2009 Matt Pruitt. See LICENSE for details.

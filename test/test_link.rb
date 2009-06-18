@@ -37,19 +37,40 @@ class TestLink < Test::Unit::TestCase
       assert(@results.is_a?(Array))
       assert(@results.include?(Link.new('http://example.com/first_page.html')))
       assert(@results.include?(Link.new('http://example.com/not_added.html')))
+      assert(@results.include?(Link.new('http://example.com/main.html?action=edit')))
+      assert(!@results.include?(Link.new('http://example.com/first_child_page.html/file://fileserver/file.pdf')))
     end
   end
   
   context "scraping inside a div" do
     setup do
       @link = Link.new('http://example.com/main.html')
-      @results = @link.scrape!('#content')
+      @results = @link.scrape!(:div => '#content')
     end
 
     should "return an array of links on the page" do
       assert_not_nil(@results)
       assert(@results.is_a?(Array))
       assert(@results.include?(Link.new('http://example.com/first_page.html')))
+      assert(@results.include?(Link.new('http://example.com/main.html?action=edit')))
+    end
+    
+    should "not return links not in the div" do
+      assert(!@results.include?(Link.new('http://example.com/not_added.html')), "Includes a link outside of the correct div.")
+    end
+  end
+  
+  context "scraping with ignore options" do
+    setup do
+      @link = Link.new('http://example.com/main.html')
+      @results = @link.scrape!(:div => '#content', :ignore => [/\?/])
+    end
+
+    should "return an array of links on the page" do
+      assert_not_nil(@results)
+      assert(@results.is_a?(Array))
+      assert(@results.include?(Link.new('http://example.com/first_page.html')))
+      assert(!@results.include?(Link.new('http://example.com/main.html?action=edit')))
     end
     
     should "not return links not in the div" do

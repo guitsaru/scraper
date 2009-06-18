@@ -7,10 +7,10 @@ module Scrape
       @visited = false
     end
     
-    def scrape!(div=nil)
+    def scrape!(options = {})
       return [] if @visited
       @visited = true
-      return get_links(div)
+      return get_links(options)
     end
     
     def ==(other)
@@ -27,10 +27,21 @@ module Scrape
     end
     
     private
-    def get_links(div)
+    def get_links(options = {})
+      div = nil
+      ignore = []
+      
+      if options[:div]
+        div = options[:div]
+      end
+      
+      if options[:ignore]
+        ignore = options[:ignore]
+      end
+      
       links = []
       
-      doc = Hpricot(Net::HTTP.get(URI.parse(url)))
+      doc = Hpricot(Net::HTTP.get(URI.parse(@url)))
       doc.search("#{div} a").each do |link|
         url = link['href']
         if url =~ /^\/(.*)/
@@ -38,13 +49,20 @@ module Scrape
           url = "#{components[0] || 'http'}://#{components[2]}#{url}"
         elsif url =~ /^http:\/\//i
           url = url
+        elsif url =~ /file:\/\//
+          next
         elsif url =~ /^#/
           url = @url.gsub(/#.*/, '').gsub(/\/$/, '') + url
         else
           url = (File.dirname(@url) + '/' + (url || ''))
         end
         
-        links << Link.new(url, link.inner_html)
+        # Don't add this link if it matches a pattern in ignore
+        skip = false
+        ignore.each { |pattern| skip = true if url =~ pattern }
+        skip = true if options[:domain] && !url.include?(options[:domain])
+        
+        links << Link.new(url, link.inner_html) unless skip
       end
       
       return links.uniq

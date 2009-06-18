@@ -23,6 +23,7 @@ class TestScraper < Test::Unit::TestCase
       assert(@results.include?(Link.new('http://example.com/first_page.html')))
       assert(@results.include?(Link.new('http://example.com/first_child_page.html')))
       assert(@results.include?(Link.new('http://example.com/first_child_page.html#content')))
+      assert(@results.include?(Link.new('http://example.com/first_child_page.html#content2')))
       assert(@results.include?(Link.new('http://example.com/main.html')))
       assert(@results.include?(Link.new('http://google.com')))
     end
@@ -42,6 +43,7 @@ class TestScraper < Test::Unit::TestCase
       assert(@results.include?(Link.new('http://example.com/first_page.html')))
       assert(@results.include?(Link.new('http://example.com/first_child_page.html')))
       assert(@results.include?(Link.new('http://example.com/first_child_page.html#content')))
+      assert(@results.include?(Link.new('http://example.com/first_child_page.html#content2')))
       assert(@results.include?(Link.new('http://example.com/main.html')))
     end
     

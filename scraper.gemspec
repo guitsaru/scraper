@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scraper}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Pruitt"]
-  s.date = %q{2009-06-17}
+  s.date = %q{2009-06-18}
   s.email = %q{guitsaru@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "scraper.gemspec",
      "test/fake_pages/first_child_page.html",
      "test/fake_pages/first_page.html",
+     "test/fake_pages/google.html",
      "test/fake_pages/main.html",
      "test/fake_pages/not_added.html",
      "test/test_helper.rb",

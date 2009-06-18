@@ -47,8 +47,8 @@ module Scrape
         if url =~ /^\/(.*)/
           components = URI::split(@url)
           url = "#{components[0] || 'http'}://#{components[2]}#{url}"
-        elsif url =~ /^http:\/\//i
-          url = url
+        elsif url =~ /^https?:\/\//i
+                  url = url
         elsif url =~ /file:\/\//
           next
         elsif url =~ /^#/
@@ -62,7 +62,17 @@ module Scrape
         ignore.each { |pattern| skip = true if url =~ pattern }
         skip = true if options[:domain] && !url.include?(options[:domain])
         
-        links << Link.new(url, link.inner_html) unless skip
+        if !skip
+          new_link = Link.new(url, link.inner_html.strip)
+          
+          # Don't visit anchors, visit the main page instead.
+          if url =~ /(https?:\/\/.*)#(.*$)/i
+            links << Link.new($1, $2)
+            new_link.visited = true
+          end
+          
+          links << new_link
+        end
       end
       
       return links.uniq

@@ -54,7 +54,11 @@ module Scrape
         elsif url =~ /^#/
           url = @url.gsub(/#.*/, '').gsub(/\/$/, '') + url
         else
-          url = (File.dirname(@url) + '/' + (url || ''))
+          if @url =~ /\/$/
+            url = @url + (url || '')
+          else
+            url = (File.dirname(@url) + '/' + (url || ''))
+          end
         end
         
         # Don't add this link if it matches a pattern in ignore

@@ -15,6 +15,30 @@ class TestScraper < Test::Unit::TestCase
   
   context "scraping" do
     setup do
+      @scraper = Scraper.new('http://example.com/main.html', :recursive => false)
+      @results = @scraper.scrape
+    end
+    
+    should "Include a list of links on the pages." do
+      assert(@results.include?(Link.new('http://example.com/first_page.html')))
+      assert(@results.include?(Link.new('http://example.com/not_added.html')))
+    end
+  end
+  
+    context "scraping from folder" do
+    setup do
+      @scraper = Scraper.new('http://example.com/folder/', :recursive => false)
+      @results = @scraper.scrape
+    end
+    
+    should "Include a list of links on the pages." do
+      assert(@results.include?(Link.new('http://example.com/folder/first_page.html')))
+      assert(@results.include?(Link.new('http://example.com/folder/not_added.html')))
+    end
+  end
+  
+  context "scraping with div" do
+    setup do
       @scraper = Scraper.new('http://example.com/main.html')
       @results = @scraper.scrape(:div => '#content')
     end

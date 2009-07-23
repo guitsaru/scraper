@@ -55,4 +55,32 @@ class TestScraper < Test::Unit::TestCase
       assert(!@results.include?(Link.new('http://google.com')))
     end
   end
+  
+  context "Non-recursive scraping" do
+    setup do
+      @scraper = Scraper.new('http://example.com/main.html', :recursive => false)
+      @results = @scraper.scrape(:div => '#content')
+    end
+
+    should "include top level links" do
+      assert(@results.include?(Link.new('http://example.com/first_page.html')))
+    end
+    
+    should "not include recursive links" do
+      assert(!@results.include?(Link.new('http://example.com/first_child_page.html')))
+      assert(!@results.include?(Link.new('http://example.com/first_child_page.html#content')))
+      assert(!@results.include?(Link.new('http://example.com/first_child_page.html#content2')))
+    end
+  end
+  
+    context "Scraping without self" do
+    setup do
+      @scraper = Scraper.new('http://example.com/main.html', :self => false)
+      @results = @scraper.scrape(:div => '#content')
+    end
+
+    should "not include self" do
+      assert(!@results.include?(Link.new('http://example.com/main.html')))
+    end
+  end
 end
